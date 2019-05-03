@@ -1,33 +1,35 @@
 'use strict';
 
 (function(window, $, Routing, swal) {
-    window.RepLogApp = function ($wrapper) {
-        this.$wrapper = $wrapper;
-        this.helper = new Helper(this.$wrapper);
+    class RepLogApp {
+        constructor($wrapper){
+            this.$wrapper = $wrapper;
+            this.helper = new Helper(this.$wrapper);
 
-        this.loadRepLogs();
+            this.loadRepLogs();
 
-        this.$wrapper.on(
-            'click',
-            '.js-delete-rep-log',
-            this.handleRepLogDelete.bind(this)
-        );
-        this.$wrapper.on(
-            'click',
-            'tbody tr',
-            this.handleRowClick.bind(this)
-        );
-        this.$wrapper.on(
-            'submit',
-            this._selectors.newRepForm,
-            this.handleNewFormSubmit.bind(this)
-        );
-    };
+            this.$wrapper.on(
+              'click',
+              '.js-delete-rep-log',
+              this.handleRepLogDelete.bind(this)
+            )
+            this.$wrapper.on(
+              'click',
+              'tbody tr',
+              this.handleRowClick.bind(this)
+            )
+            this.$wrapper.on(
+              'submit',
+              this._selectors.newRepForm,
+              this.handleNewFormSubmit.bind(this)
+            )
+        }
 
-    $.extend(window.RepLogApp.prototype, {
-        _selectors: {
-            newRepForm: '.js-new-rep-log-form'
-        },
+        get _selectors() {
+            return {
+                newRepForm: '.js-new-rep-log-form'
+            }
+        }
 
         loadRepLogs() {
             $.ajax({
@@ -37,15 +39,15 @@
                     this._addRow(repLog);
                 });
             })
-        },
+        }
 
-        updateTotalWeightLifted: function () {
+        updateTotalWeightLifted() {
             this.$wrapper.find('.js-total-weight').html(
-                this.helper.getTotalWeightString()
+              this.helper.getTotalWeightString()
             );
-        },
+        }
 
-        handleRepLogDelete: function (e) {
+        handleRepLogDelete(e) {
             e.preventDefault();
 
             const $link = $(e.currentTarget);
@@ -60,14 +62,14 @@
             }).catch((arg) => {
                 // canceling is cool!
             });
-        },
+        }
 
         _deleteRepLog($link) {
             $link.addClass('text-danger');
             $link.find('.fa')
-                .removeClass('fa-trash')
-                .addClass('fa-spinner')
-                .addClass('fa-spin');
+              .removeClass('fa-trash')
+              .addClass('fa-spinner')
+              .addClass('fa-spin');
 
             const deleteUrl = $link.data('url');
             const $row = $link.closest('tr');
@@ -81,11 +83,11 @@
                     this.updateTotalWeightLifted();
                 });
             })
-        },
+        }
 
         handleRowClick() {
             console.log('row clicked!');
-        },
+        }
 
         handleNewFormSubmit(e) {
             e.preventDefault();
@@ -96,13 +98,13 @@
                 formData[fieldData.name] = fieldData.value
             });
             this._saveRepLog(formData)
-            .then((data) => {
-                this._clearForm();
-                this._addRow(data);
-            }).catch((errorData) => {
+              .then((data) => {
+                  this._clearForm();
+                  this._addRow(data);
+              }).catch((errorData) => {
                 this._mapErrorsToForm(errorData.errors);
             });
-        },
+        }
 
         _saveRepLog(data) {
             return new Promise((resolve, reject) =>{
@@ -124,7 +126,7 @@
                     reject(errorData);
                 });
             });
-        },
+        }
 
         _mapErrorsToForm(errorData) {
             this._removeFormErrors();
@@ -143,20 +145,20 @@
                 $wrapper.append($error);
                 $wrapper.addClass('has-error');
             });
-        },
+        }
 
         _removeFormErrors() {
             const $form = this.$wrapper.find(this._selectors.newRepForm);
             $form.find('.js-field-error').remove();
             $form.find('.form-group').removeClass('has-error');
-        },
+        }
 
         _clearForm() {
             this._removeFormErrors();
 
             const $form = this.$wrapper.find(this._selectors.newRepForm);
             $form[0].reset();
-        },
+        }
 
         _addRow(repLog) {
             const tplText = $('#js-rep-log-row-template').html();
@@ -167,15 +169,16 @@
 
             this.updateTotalWeightLifted();
         }
-    });
+    }
 
     /**
      * A "private" object
      */
-    const Helper =  ($wrapper) => {
-        this.$wrapper = $wrapper;
-    };
-    $.extend(Helper.prototype, {
+    class Helper {
+        constructor($wrapper) {
+            this.$wrapper = $wrapper;
+        }
+
         calculateTotalWeight() {
             let  totalWeight = 0;
             this.$wrapper.find('tbody tr').each((index, element) => {
@@ -183,7 +186,7 @@
             });
             console.log(totalWeight )
             return totalWeight;
-        },
+        }
 
         getTotalWeightString(maxWeight = 500) {
             let weight = this.calculateTotalWeight();
@@ -192,5 +195,7 @@
             }
             return weight + 'lbs';
         }
-    });
+    }
+
+    window.RepLogApp = RepLogApp;
 })(window, jQuery, Routing, swal);
