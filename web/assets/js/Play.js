@@ -44,3 +44,8 @@ let anotherGreatThings = [...greatThings];
 anotherGreatThings.push('summer');
 console.log(greatThings);
 console.log(anotherGreatThings);
+
+const favoriteFood = 'gelato';
+const iLoveFood = `The year is ${(new Date()).getFullYear()} and my favorite food is ${favoriteFood}`;
+console.log(iLoveFood);
+
