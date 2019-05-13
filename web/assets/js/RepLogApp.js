@@ -161,6 +161,8 @@
         }
 
         _addRow(repLog) {
+            let { id, itemLabel, reps = "already exists", totallyMAdeup = "what ever" } = repLog;
+            console.log(id, itemLabel, reps, totallyMAdeup);
             const tplText = $('#js-rep-log-row-template').html();
             const tpl = _.template(tplText);
 
