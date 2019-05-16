@@ -49,3 +49,32 @@ const favoriteFood = 'gelato';
 const iLoveFood = `The year is ${(new Date()).getFullYear()} and my favorite food is ${favoriteFood}`;
 console.log(iLoveFood);
 
+//MAP
+
+let foods = {};
+
+foods.italian = 'gelato';
+foods.mexican = 'torta';
+foods.canadian = 'poutine';
+
+
+let foodsES6 = new WeakMap();
+// foodsES6.set('italian', 'gelato');
+// foodsES6.set('mexican', 'torta');
+// foodsES6.set('canadian', 'poutine');
+
+let southernUsStates = ['Tenessee', 'Kentucky', 'Texas'];
+foodsES6.set(southernUsStates,'hot chicken');
+console.log(
+  // foodsES6.has('toto'),
+  // foodsES6.get('italian'),
+  foodsES6.get(southernUsStates)
+);
+
+foods = new Set;
+foods.add('toto');
+foods.add('tata');
+foods.add('titi');
+foods.add('titi');
+
+console.log(foods)

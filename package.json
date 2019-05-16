@@ -1,0 +1,12 @@
+{
+  "name": "code-javascript-es6",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:sungvadan/code-javascript-es6.git",
+  "author": "Van Truong PHAN <svd.phan@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0"
+  }
+}
